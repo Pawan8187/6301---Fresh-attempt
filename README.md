@@ -68,19 +68,29 @@ The create line increase was loaded in google colab. Basic data analysis was per
 
 ![Correlation Heatmap](corr_heatmap.png)
 
+We also computed the data histograms for each parameter so we can see the distribution of values for each parameter. We can see from the figure that most of the parameters are skewed to the lower value of the range. The skew could affect the accuracy of the measure of central tendency that we used. 
+
+![Data Histograms](data_histograms.png)
+
 #### **2.	Train a decision tree model**
 
 The data is partitioned into training, validation, and test sets (50%, 25%, 25% respectively) to accurately evaluate the model. Testing data which is used to evaluate the trained model to test how the model will perform on real data. 12 different models are trained using decision trees and calculated the ROC AUC for each model.
 AUC ROC 
-An ROC curve (Receiver Operating Characteristic curve) is a graph that shows performance of a classification model that is captured at all classification thresholds.
-True Positive Rate (TPR): It is called recall and it is measured as:
-TPR = TP/(TP+FN)
-False Positive Rate (FPR): 
-FPR = FP/(FP+TN)
-ROC curve plots FPR on the x-axis and TPR on the y-axis at different classification thresholds. If threshold level is reduced, more items will be considered as positive. Thus, both False Positives and True Positives will increase.
-The AUC curve is Area Under the ROC curve. The higher the AUC, the better the model can predict the target variable. The below graph shows that the maximum validation AUC is at depth 6.
+
+#### An ROC curve (Receiver Operating Characteristic curve) is a graph that shows performance of a classification model that is captured at all classification thresholds.
+#### True Positive Rate (TPR): It is called recall and it is measured as:
+#### TPR = TP/(TP+FN)
+#### False Positive Rate (FPR): 
+#### FPR = FP/(FP+TN)
+#### ROC curve plots FPR on the x-axis and TPR on the y-axis at different classification thresholds. If threshold level is reduced, more items will be considered as positive. Thus, both False Positives and True Positives will increase.
+#### The AUC curve is Area Under the ROC curve. The higher the AUC, the better the model can predict the target variable. The below graph shows that the maximum validation AUC is at depth 6.
 
 ![Iteration Plot Rev](data_plot_rev1.png)
+
+Our best model is the Decision Tree with depth of 7. This is the depth with the maximum Training AUC. At this point, the Validation AUC is 0.742115 and the Hispanic-to-White AIR is 0.835886. This means that using this model will not put the Hispanic group in adverse situation. The resulting tree is shown below.
+
+![Decision Classifier Tree Plot](tree_plot.png)
+
 
 The below plot is the plot of variable importance. It provides the variable importance that provides a list of the most significant variables in descending order. Pay_0 contribute most to the model and also have high predictive power in classifying the target variable.
 
@@ -158,6 +168,14 @@ The protected group for gender bias testing is female, and the reference group i
 | **predicted: 1** | 712 | 1427 |
 | **predicted: 0** | 248 | 2191 | 
 
+Looking at the data by sexes, we can see almost similar acceptance rate between the two sexes. Hence, we can see that there is little difference between the two sexes in terms of acceptance rate.
+
+#### **Comparison of Acceptance Rates by Sex**
+| Sex | Acceptance Rate | AIR (compared to Male) |
+|------|-----------------|-------------------------|
+| Male | 0.503 | 1.00 |
+| Female | 0.533 | 1.06 |
+
 #### **4.	Remediate discovered discrimination**
 
 It is a common scenario that Black and Hispanic groups face difficulty in getting approval for home loans as compared to White and Asian people. In 2015, 27.4% of the Black applicants and 19.2% of Hispanic applicants were denied mortgages, compared with about 11% of White and Asian applicants which can be also observed in our initial model. The biased behavior of ML models has adverse effects on society. With our initial probability cutoff of 0.15, the Hispanic-to-White AIR fell below the minimum acceptable value of 0.80 and the Black-to-White AIR was just over 0.80 by 0.02.
@@ -223,148 +241,3 @@ There is a very high probability that real-world data will have missing values. 
 2.	Hall, P. (n.d.). Increase Fairness in Your Machine Learning Project with Disparate Impact Analysis using Python and H2O. Jupyter. https://nbviewer.org/github/jphall663/interpretable_machine_learning_with_python/blob/master/dia.ipynb
 3.	U.S. Department of Labor. (n.d.). Practical Significance in EEO Analysis Frequently Asked Questions. https://www.dol.gov/agencies/ofccp/faqs/practical-significance
 
-
-
-
-
-
-We used Area Under the ROC Curve (AUC) to assess the performance of the model. The ROC curve is defined as the Receiver Operating Characteristic curve. It shows the performance of a classification model at all classification thresholds. The ROC curve plots two variables: 
-* True Positive Rate 
-* False Positive Rate
-
-AUC gives us the area under the ROC curve which is the area from FP Rate = 0 to FP Rate = 1. A model with an AUC of 0.0 is 100% wrong while a model with an AUC of 1.0 is 100% correct. Real-world models are in between theses two values. 
-
-We also use Adverse Impact Ratios (AIR) to see analyze the impact of the classification model. Adverse impact is the negative effect an unfair and biased selection procedure has on a protected class. It occurs when a protected group is discriminated against during a selection process, like approving loans for the bank. If the selection rate for a certain group is less than 80% of that of the group with the highest selection rate, there is an adverse impact on that group. 
-
-Based on our final model, the computed AUCs and AIR are shown in the table below with varying depth of Decision Tree Classifier.
-
-| Depth | Training AUC | Validation AUC | 5-Fold SD | Hispanic-to-White-AIR |
-| ----- | ------------ | -------------- | --------- | --------------------- |
-| 1 | 0.645748 |	0.643880|	0.009275|	0.894148|
-| 2|	0.699912|	0.687752	|0.012626|	0.850871|
-|3	|0.742968|	0.729490|	0.017375|	0.799546|
-|4	|0.757178|	0.741696|	0.017079|	0.792435|
-|5	|0.769331|	0.742480|	0.019886|	0.829336|
-|6	|0.783722|	0.749610|	0.017665|	0.833205|
-|7	|0.795777|	0.742115|	0.022466|	0.835886|
-|8	|0.807291|	0.739990|	0.015567|	0.811300|
-|9	|0.822913|	0.727224|	0.012042|	0.811561|
-|10	|0.838052|	0.720562|	0.013855|	0.803621|
-|11	|0.855168|	0.709864|	0.010405|	0.837806|
-|12	|0.874251|	0.688074|	0.008073|	0.844889| 
-
-The data in the table above is plotted below to see the variation of the metrics on different values of Decision Tree Classifier depths.
-
-![Iteration Plot](data_plot.png)
-
-We also analyzed the correlation between pairs of columns in the raw data. The correlation heatmap is shown in the image below. 
-
-![Correlation Heatmap](corr_heatmap.png)
-
-We also computed the data histograms for each parameter so we can see the distribution of values for each parameter. We can see from the figure that most of the parameters are skewed to the lower value of the range. The skew could affect the accuracy of the measure of central tendency that we used. 
-
-![Data Histograms](data_histograms.png)
-
-Our best model is the Decision Tree with depth of 7. This is the depth with the maximum Training AUC. At this point, the Validation AUC is 0.742115 and the Hispanic-to-White AIR is 0.835886. This means that using this model will not put the Hispanic group in adverse situation. The resulting tree is shown below.
-
-![Decision Classifier Tree Plot](tree_plot.png)
-
-Based on the results of the training data, we also analyzed the features as to its effect on the dependent varaible. The plot below shows a comparison of the importance of variables. The more important a variable is, the more it affects the result. We can see that the variable PAY_0 has the largest influence on the program. The first payment seems to be the major contributor. The least important variable is the PAY_5 variable. This means that the 6th payment has the least importance in the approval of loan.
-
-![Variable Importance](variable_importance.png)
-
-We have seen in the graph above the effect of credit history on the approval of loan. But it is known in real-life situation that demographics also affects loan approval. At this part, we want to check if there is any bias on the approval among the demographic variables. We used the confusion matrix to evaluate the biases. The tables are shown below.
-
-#### **Confusion Matrix by Hispanic Race**
-| | actual: 1 | actual: 0 |
-|-|-----------|-----------|
-| **predicted: 1** | 447 | 387 |
-| **predicted: 0** | 139 | 501 | 
-
-#### **Confusion Matrix by Black Race**
-| | actual: 1 | actual: 0 |
-|-|-----------|-----------|
-| **predicted: 1** | 449 | 348 |
-| **predicted: 0** | 157 | 537 | 
-
-#### **Confusion Matrix by White Race**
-| | actual: 1 | actual: 0 |
-|-|-----------|-----------|
-| **predicted: 1** | 176 | 813 |
-| **predicted: 0** | 72 | 1228 | 
-
-#### **Confusion Matrix by Asian Race**
-| | actual: 1 | actual: 0 |
-|-|-----------|-----------|
-| **predicted: 1** | 186 | 784 |
-| **predicted: 0** | 59 | 1217 | 
-
-We then compare the acceptance rates by race by computing the AIR between the two races. The results are listed in the tables below. Based on the AIR, the black and asian races are not in adverse risk since their acceptance rate is more than 80% that of white. However, the hispanic race is at adverse risk due to its AIR below 80%. We can see here that the White race has the highest acceptance rate and other races are lower than that. 
-
-#### **Comparison of Acceptance Rates by Race**
-| Race | Acceptance Rate | AIR (compared to White) |
-|------|-----------------|-------------------------|
-| White | 0.568 | 1.00 |
-| Hispanic | 0.434 | 0.76 |
-| Black | 0.465 | 0.82 |
-| Asian | 0.568 | 1.00 |
-
-Besides race, we also analyze the AIR between female and male sexes. The confusion matrix showing the acceptance rate is shown in the tables below.
-
-#### **Confusion Matrix by Male**
-| | actual: 1 | actual: 0 |
-|-|-----------|-----------|
-| **predicted: 1** | 546 | 905 |
-| **predicted: 0** | 179 | 1292 | 
-
-#### **Confusion Matrix by Female**
-| | actual: 1 | actual: 0 |
-|-|-----------|-----------|
-| **predicted: 1** | 712 | 1427 |
-| **predicted: 0** | 248 | 2191 | 
-
-Looking at the data by sexes, we can see almost similar acceptance rate between the two sexes. Hence, we can see that there is little difference between the two sexes in terms of acceptance rate.
-
-#### **Comparison of Acceptance Rates by Sex**
-| Sex | Acceptance Rate | AIR (compared to Male) |
-|------|-----------------|-------------------------|
-| Male | 0.503 | 1.00 |
-| Female | 0.533 | 1.06 |
-
-From the analysis above, we have to adjust the model not to put the Hispanic race at risk. Right now, we have AIR of 0.76 which is less than 0.80. From here, we adjusted the cut-off to fix this issue. After several tries, we arrived at a cut-off of 0.18. We recomputed the confusion matrices and the acceptance rates. The results are shown below.
-
-With the adjusted cut-off, we were able to increase the acceptance rates across all races and sexes. From the table below, we can see that the AIR of Hispanic race increased from 0.76 to 0.83. The AIR of Black race increased from 0.82 to 0.85. From the AIR between female and male, we can see here that the acceptance rates are close to each other. 
-
-#### **Comparison of Revised Acceptance Rates by Race**
-| Race | Revised Acceptance Rate | AIR (compared to White) |
-|------|-------------------------|-------------------------|
-| White | 0.735 | 1.00 |
-| Hispanic | 0.613 | 0.83 |
-| Black | 0.626 | 0.85 |
-| Asian | 0.739 | 1.00 |
-
-#### **Comparison of Revised Acceptance Rates by Sex**
-| Sex | Revised Acceptance Rate | AIR (compared to Male) |
-|-----|-------------------------|-------------------------|
-| Male | 0.682 | 1.00 |
-| Female | 0.696 | 1.02 |
-
-With the updated cut-off, we recomputed the AUC for various tree depths. We calculated from 1 to 12 tree depth. The AUC are shown below. Here we can see that there is a gradual increase in the training AUC. This is due to overfitting of data. We must look at the validation AUC since it involves data points that are not included in the training. From the iteration plot below, we can see that the validation AUC drops as we increase the depth to more than 6. As the model is overfitted, it gets less accurate to other parts of the data. 
-
-![Iteration Plot Rev](data_plot_rev1.png)
-
-### Ethical Considerations
-
-#### Potential Negative Impacts
-*Math or Software Problems:* 
-Using this model is based on running through a small dataset. Mathematically, this means that the data is not reliable since it is not representative of the population. It requires further testing to larger dataset so we can verify that it maintains a reasonable AUC and AIR levels. In addition to that, we have used scikit learn software as a model which is relatively stable. Scikit learn may not be fast enough if we train the model using a larger dataset. Hence, we can use other modelling software with larger data capacity and faster execution time. 
-
-*Real-world risks:* 
-Due to concerns on reliability of the model, we must be careful in using this in the actual world. Disapproving loans to credit worthy invdividuals due to a mistake on this model can be a matter of losing a home or business for that individual. This could pose real life effects that.
-
-#### Potential Uncertainties
-*Math or Software Problems:*
-Due to the limited dataset used in our model, the prediction can have a high uncertainty. Since we are using third-party software to run the model, there might be bugs and issues in it that will affect the execution of the model. 
-
-*Real-world risks:* 
-Real-world risks are there in the use of this model. If banks will use this model as basis of their decision, this will affect the life of people. 
