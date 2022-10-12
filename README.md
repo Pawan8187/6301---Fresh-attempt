@@ -222,17 +222,14 @@ The below table indicates the final value of the metrics for all data: training,
 
 #### **1. Negative impacts of using the model:**
 
-Math/Software Problems: There is always a high risk of attaining inconsistent result if results are based on recent payment trend while the long-term trends of are overlooked. One of the software problems in this model also the variable is carrying significant importance too.
-Real world risks: Because of inconsistent result, it is likely that the customers’ credit limit may remain plateau, if not dipped, i.e., increase in credit limits of customer’s’ are almost unlikely. Since, the model is little biased, applying it to real world could have severe negative impact.
+ Since, the model is little biased, applying it to real world could have severe negative impact.
 
 #### **2. Potential uncertainties relating to the impacts of using the model:**
 
-Math/Software Problems: A classic example of software problem is that it is quite possible because of one or few low metrics among several high scoring metrics may cause an unjustified result, eventually causing low credit limit for customers.
-Real world risks: If the output of model will be implemented by the users, then the customers will not be granted additional credit what they deserve. In bigger prospect it will not only hamper the individual but also will adversely impact the economy, a negative aftermath of bias model.
-
+This model has taken various factors in account; however It hasn't taken in account the privacy and securities . 
 #### **3. Other unexpected results:**
 
-There is a very high probability that real-world data will have missing values. We have seen that there is no missing value in our data. It is evident from the variable importance chart that PAY_0 variable has the most critical role in the model. Thus, the model is dependent on the most recent payment instead of the consistent payment history. Still, the above-unexpected results do not disqualify the model, however, it is important to be aware of them. 
+ It is evident from the variable importance chart that PAY_0 variable has the most critical role in the model. Thus, the model is dependent on the most recent payment instead of the consistent payment history. Still, the above-unexpected results do not disqualify the model, however, it is important to be aware of them. 
 
 
 #### **Sources:**
